@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.bean.User;
+import com.entity.User;
 
 @Controller
 public class IndexController {
@@ -31,7 +31,7 @@ public class IndexController {
 	@RequestMapping(value = "/update", method=RequestMethod.POST)
 	@ResponseBody
 	public User get(@RequestBody User user) {
-		user.setName("bbb");
+		user.setUsername("bbb");
 		return user;
 	}
 }
