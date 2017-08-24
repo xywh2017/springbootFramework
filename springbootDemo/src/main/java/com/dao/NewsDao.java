@@ -11,43 +11,41 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
-import com.entity.User;
+import com.entity.News;
 
 @Repository
-public class UserDao {
+public class NewsDao {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-	public User createUser(final User user) {
-		final String sql = "insert into sys_user(organization_id, username, password, salt, role_id,realname,phone,email,locked) "
-				+ " values(?,?,?,?,?,?,?,?,?)";
+	public News add(final News news) {
+		final String sql = "insert into sys_news(title, author, release_time, news_type, content,img,available) "
+				+ " values(?,?,?,?,?,?,?)";
 
 		GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
 		jdbcTemplate.update(new PreparedStatementCreator() {
 			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
 				PreparedStatement psst = connection.prepareStatement(sql, new String[] { "id" });
 				int count = 1;
-				psst.setLong(count++, user.getOrganizationId());
-				psst.setString(count++, user.getUsername());
-				psst.setString(count++, user.getPassword());
-				psst.setString(count++, user.getSalt());
-				psst.setLong(count++, user.getRoleId());
-				psst.setString(count++, user.getRealname());
-				psst.setString(count++, user.getPhone());
-				psst.setString(count++, user.getEmail());
-				psst.setBoolean(count, user.getLocked());
+				psst.setString(count++, news.getTitle());
+				psst.setString(count++, news.getAuthor());
+				psst.setTimestamp(count++, new java.sql.Timestamp(news.getReleaseTime().getTime()));
+				psst.setInt(count++, news.getNewsType());
+				psst.setString(count++, news.getContent());
+				psst.setString(count++, news.getImg());
+				psst.setBoolean(count++, news.getAvailable());
 				return psst;
 			}
 		}, keyHolder);
 
-		user.setId(keyHolder.getKey().longValue());
-		return user;
+		news.setId(keyHolder.getKey().longValue());
+		return news;
 	}
     
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public List<User> findAll() {
-        return jdbcTemplate.query("select * from sys_user", new BeanPropertyRowMapper(User.class));
+    public List<News> findAll() {
+        return jdbcTemplate.query("select * from sys_news", new BeanPropertyRowMapper(News.class));
     }
 
 }

@@ -2,8 +2,8 @@ DROP DATABASE IF EXISTS sfc;
 DROP USER IF exists sfc;
 create user sfc encrypted password '123456';
 CREATE DATABASE sfc with owner sfc;
-CREATE EXTENSION postgis;
-CREATE EXTENSION hstore;
+CREATE EXTENSION postgis with owner sfc;
+CREATE EXTENSION hstore with owner sfc;
 CREATE SCHEMA AUTHORIZATION sfc;
 
 DROP TABLE IF EXISTS "sys_user";
@@ -21,6 +21,7 @@ create sequence "sys_user_seq"
     no minvalue
     no maxvalue
     cache 1;
+ALTER TABLE sys_user_seq OWNER TO sfc;
 create table "sys_user" (
   "id" int4 default nextval('sys_user_seq'::regclass),
   "organization_id" int4,
@@ -37,8 +38,7 @@ create table "sys_user" (
 )WITH (
   OIDS=FALSE
 );
-ALTER TABLE sys_user
-  OWNER TO sfc;
+ALTER TABLE sys_user OWNER TO sfc;
 alter table "sys_user" alter column "id" set default nextval('sys_user_seq');
 
 drop sequence IF EXISTS "sys_organization_seq";
@@ -50,8 +50,7 @@ create sequence "sys_organization_seq"
     no minvalue
     no maxvalue
     cache 1;
-
-    
+ALTER TABLE sys_organization_seq OWNER TO sfc;
     -- ----------------------------
 -- Table structure for sys_organization
 -- ----------------------------
@@ -74,8 +73,7 @@ create table "sys_organization" (
 )WITH (
   OIDS=FALSE
 );
-ALTER TABLE sys_organization
-  OWNER TO sfc;
+ALTER TABLE sys_organization OWNER TO sfc;
 alter table "sys_organization" alter column "id" set default nextval('sys_organization_seq');
 
 drop sequence IF EXISTS "sys_resource_seq";
@@ -87,7 +85,8 @@ create sequence "sys_resource_seq"
     no minvalue
     no maxvalue
     cache 1;
-	
+ALTER TABLE sys_resource_seq OWNER TO sfc;
+
 create table "sys_resource" (
   id int4 default nextval('sys_resource_seq'::regclass),
   name varchar(100),
@@ -102,8 +101,7 @@ create table "sys_resource" (
 )WITH (
   OIDS=FALSE
 );
-ALTER TABLE sys_resource
-  OWNER TO sfc;
+ALTER TABLE sys_resource OWNER TO sfc;
 alter table "sys_resource" alter column "id" set default nextval('sys_resource_seq');
 
 drop sequence IF EXISTS "sys_role_seq";
@@ -115,7 +113,8 @@ create sequence "sys_role_seq"
     no minvalue
     no maxvalue
     cache 1;
-	
+ALTER TABLE sys_role_seq OWNER TO sfc;
+
 create table "sys_role" (
   id int4 default nextval('sys_role_seq'::regclass),
   template_id int4,
@@ -128,8 +127,7 @@ create table "sys_role" (
 )WITH (
   OIDS=FALSE
 );
-ALTER TABLE sys_role
-  OWNER TO sfc;
+ALTER TABLE sys_role OWNER TO sfc;
 alter table "sys_role" alter column "id" set default nextval('sys_role_seq');
 
 drop sequence IF EXISTS "sys_news_seq";
@@ -141,7 +139,8 @@ create sequence "sys_news_seq"
     no minvalue
     no maxvalue
     cache 1;
-	
+ALTER TABLE sys_news_seq OWNER TO sfc;
+
 create table "sys_news" (
   id int4 default nextval('sys_news_seq'::regclass),
   title varchar(100),
@@ -155,6 +154,5 @@ create table "sys_news" (
 )WITH (
   OIDS=FALSE
 );
-ALTER TABLE sys_news
-  OWNER TO sfc;
+ALTER TABLE sys_news OWNER TO sfc;
 alter table "sys_news" alter column "id" set default nextval('sys_news_seq');
